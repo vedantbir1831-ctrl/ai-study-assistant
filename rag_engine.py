@@ -1,5 +1,5 @@
 import chromadb
-from langchain_text_splitter import RecursiveCharacterTextSplitter
+from langchain.text_splitter import RecursiveCharacterTextSplitter
 from openai import OpenAI
 
 client = OpenAI()
@@ -31,4 +31,5 @@ def search_context(query):
         query_texts=[query],
         n_results=3
     )
+
     return results["documents"][0] if results["documents"] else []
