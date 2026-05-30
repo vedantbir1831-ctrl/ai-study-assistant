@@ -1,5 +1,4 @@
 import chromadb
-from langchain.text_splitter import RecursiveCharacterTextSplitter
 from openai import OpenAI
 
 client = OpenAI()
@@ -9,11 +8,16 @@ collection = chroma_client.get_or_create_collection(name="pdf_docs")
 
 
 def chunk_text(text):
-    splitter = RecursiveCharacterTextSplitter(
-        chunk_size=1000,
-        chunk_overlap=200
-    )
-    return splitter.split_text(text)
+    chunks = []
+    size = 1000
+    overlap = 200
+
+    start = 0
+    while start < len(text):
+        end = start + size
+        chunks.append(text[start:end])
+        start = end - overlap
+    return chunks
 
 
 def store_embeddings(text, doc_id):
